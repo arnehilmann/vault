@@ -1,175 +1,90 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-    <title>Vault</title>
-    <link rel="stylesheet" href="./lib/style.css">
-    <style>
-      .overlay {
-        background-color: #000;
-        opacity: .7;
-        filter: alpha(opacity=80) blur(5px);
-        position: absolute; top: 20; left: 20;
-        width: 100%; height: 100%;
-        z-index: 10;
-      }
-      .hidden {
-        display: none;
-      }
-    </style>
-  </head>
   <body>
-
-  <!--
-    <div class="form">
-      <div class="sub">
-        <label for="service">Service name <span>e.g. &ldquo;twitter&rdquo;</span></label>
-        <input type="text" class="text" name="service" id="service" autocomplete="off" autocapitalize="off">
-
-        <div class="password">
-          <label for="passphrase">Passphrase <span>e.g. &ldquo;I&rsquo;m the best 17-year old ever.&rdquo;</span></label>
-          <input type="password" class="password" name="passphrase" id="passphrase" autocomplete="off" autocapitalize="off">
-          <input type="text" class="text" name="passphrase-text" id="passphrase-text" autocomplete="off" autocapitalize="off">
-          <span class="show">
-            <label for="show-passphrase">Show</label>
-            <input type="checkbox" name="show-passphrase" id="show-passphrase">
-          </span>
-        </div>
-
-        <div class="length">
-          <label for="vlength">Password length <span>e.g. 12</span></label>
-          <input type="text" class="text" name="vlength" id="vlength" value="20" autocomplete="off" autocapitalize="off">
-        </div>
-
-        <div class="repeat">
-          <label for="repeat">Max repetition <span>e.g. 2</span></label>
-          <input type="text" class="text" name="repeat" id="repeat" value="" autocomplete="off" autocapitalize="off">
-        </div>
-
-        <div class="field">
-          <table>
-            <thead>
-              <tr>
-                <td></td>
-                <th scope="col">a&ndash;z</th>
-                <th scope="col">A&ndash;Z</th>
-                <th scope="col">0&ndash;9</th>
-                <th scope="col">- / _</th>
-                <th scope="col">SPACE</th>
-                <th scope="col">!@#$%</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">
-                  <label for="required">Required</label>
-                  (<input type="text" class="text" name="required" id="required" value="2" autocomplete="off" autocapitalize="off">)
-                </th>
-                <td><input type="radio" name="lower" value="required"></td>
-                <td><input type="radio" name="upper" value="required"></td>
-                <td><input type="radio" name="number" value="required"></td>
-                <td><input type="radio" name="dash" value="required"></td>
-                <td><input type="radio" name="space" value="required"></td>
-                <td><input type="radio" name="symbol" value="required"></td>
-              </tr>
-              <tr>
-                <th scope="row">Allowed</th>
-                <td><input type="radio" name="lower" value="allowed" checked="checked"></td>
-                <td><input type="radio" name="upper" value="allowed" checked="checked"></td>
-                <td><input type="radio" name="number" value="allowed" checked="checked"></td>
-                <td><input type="radio" name="dash" value="allowed" checked="checked"></td>
-                <td><input type="radio" name="space" value="allowed" checked="checked"></td>
-                <td><input type="radio" name="symbol" value="allowed" checked="checked"></td>
-              </tr>
-              <tr>
-                <th scope="row">Forbidden</th>
-                <td><input type="radio" name="lower" value="forbidden"></td>
-                <td><input type="radio" name="upper" value="forbidden"></td>
-                <td><input type="radio" name="number" value="forbidden"></td>
-                <td><input type="radio" name="dash" value="forbidden"></td>
-                <td><input type="radio" name="space" value="forbidden"></td>
-                <td><input type="radio" name="symbol" value="forbidden"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="generator">
-      <div class="sub">
-        <label for="word">Generated password</label>
-        <input type="text" class="text" id="word" autocomplete="off" autocapitalize="off">
-      </div>
-    </div>
-
--->
-
+    password: <input type="password" id="yourpassword"></input>
     <script>
         var show_overlay = function() {
             var overlay = document.createElement("div");
             overlay.setAttribute("id","overlay");
-            overlay.setAttribute("class", "overlay");
+            overlay.setAttribute("style", "background-color: #000; opacity: .7; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;");
+
+            var hidden = document.createElement("div");
+            hidden.setAttribute("style", "display: none;");
+            overlay.appendChild(hidden);
 
             var service = document.createElement("input");
-            //service.setAttribute("id", "service");
             service.id = "service";
-            service.value = "service";
+            service.value = window.location.hostname;
+            if (service.value) {
+              service.setAttribute("readonly", "readonly");
+            }
+            service.setAttribute("style", "float: right; clear: right;");
             overlay.appendChild(service);
 
             var passphrase = document.createElement("input");
-            passphrase.setAttribute("id", "passphrase");
-            passphrase.value = "passphrase";
+            passphrase.id = "passphrase";
+            passphrase.setAttribute("style", "float: right; clear: right;");
             overlay.appendChild(passphrase);
 
             var passphrase_text = document.createElement("input");
             passphrase_text.id = "passphrase-text";
-            passphrase_text.className = "hidden";
-            passphrase_text.value = "passphrase text";
-            overlay.appendChild(passphrase_text);
+            hidden.appendChild(passphrase_text);
 
             var show_passphrase = document.createElement("input");
             show_passphrase.type = "checkbox";
-            show_passphrase.className = "hidden";
             show_passphrase.id = "show-passphrase";
-            overlay.appendChild(show_passphrase);
+            hidden.appendChild(show_passphrase);
 
             var length = document.createElement("input");
             length.id = "vlength";
-            length.className = "hidden";
             length.value = "20";
-            overlay.appendChild(length);
+            hidden.appendChild(length);
 
             var repeat = document.createElement("input");
             repeat.id = "repeat";
-            repeat.className = "hidden";
             repeat.value = "2";
-            overlay.appendChild(repeat);
+            hidden.appendChild(repeat);
 
             var required = document.createElement("input");
             required.id = "required";
-            required.className = "hidden";
             required.value = "2";
-            overlay.appendChild(required);
+            hidden.appendChild(required);
 
             var word = document.createElement("input");
             word.setAttribute("id", "word");
-            word.value = "word";
+            word.setAttribute("readonly", "readonly");
+            word.setAttribute("style", "float: right; clear: right;");
             overlay.appendChild(word);
 
-            var button = document.createElement('button');
-            button.appendChild(document.createTextNode("close"));
-            //button.onclick = restore;
-            overlay.appendChild(button);
-
             document.body.appendChild(overlay);
+
+            var inputs = document.getElementsByTagName('input'), input;
+            for (var i = 0, n = inputs.length; i < n; i++) {
+                var input = inputs[i];
+                if (input.type == "password") {
+                    console.log("password form found: " + input.id);
+                    var copynclose = function(input){
+                        return function(e){
+                            if (e.keyCode === 13) {
+                                input.value = word.value;
+                                console.log("copying generated password to " + input.id);
+                                document.body.removeChild(overlay);
+                            }
+                        }
+                    }
+                    service.addEventListener("keydown", copynclose(input), false);
+                    passphrase.addEventListener("keydown", copynclose(input), false);
+                }
+            }
         };
         var store = undefined;
-        var length = 20;
         show_overlay();
+
     </script>
 
+    <!--
+    <script src="./vault-min.js"></script>
+    -->
     <script src="res/crypto-js.js"></script>
     <script src="res/buffer.js"></script>
     <script src="res/crypto-shim.js"></script>
