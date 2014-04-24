@@ -115,34 +115,34 @@ togglePassword('passphrase');
     on(inputs[i], 'change', update);
   }
 
-  var fetchSettings = function() {
-    if (!store) return;
-
-    message.innerHTML = 'Loading&hellip;';
-    message.className = 'active';
-
-    store.serviceSettings(service.value, true, function(error, settings) {
-      if (error)
-        return message.innerHTML = 'Error';
-
-      phrase.value = settings.phrase || defaultSettings.phrase;
-      length.value = settings.length || defaultSettings.length;
-      repeat.value = settings.repeat || defaultSettings.repeat || '';
-
-      var value, req, i, n = TYPES.length;
-
-      for (i = 0; i < n; i++) {
-        value = settings[TYPES[i]];
-        req = req || value;
-        setRadio(TYPES[i], value);
-      }
-      required.value = (req === undefined) ? 2 : req;
-      update();
-      message.innerHTML = store.getName();
-      message.className = '';
-    });
-  };
-  on(service, 'blur', fetchSettings);
+//  var fetchSettings = function() {
+//    if (!store) return;
+//
+//    message.innerHTML = 'Loading&hellip;';
+//    message.className = 'active';
+//
+//    store.serviceSettings(service.value, true, function(error, settings) {
+//      if (error)
+//        return message.innerHTML = 'Error';
+//
+//      phrase.value = settings.phrase || defaultSettings.phrase;
+//      length.value = settings.length || defaultSettings.length;
+//      repeat.value = settings.repeat || defaultSettings.repeat || '';
+//
+//      var value, req, i, n = TYPES.length;
+//
+//      for (i = 0; i < n; i++) {
+//        value = settings[TYPES[i]];
+//        req = req || value;
+//        setRadio(TYPES[i], value);
+//      }
+//      required.value = (req === undefined) ? 2 : req;
+//      update();
+//      message.innerHTML = store.getName();
+//      message.className = '';
+//    });
+//  };
+//  on(service, 'blur', fetchSettings);
 
 //  var insert = function() {
 //    var password = word.value.replace(/'/g, '\\\'');
